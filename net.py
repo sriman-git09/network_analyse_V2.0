@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import ttk
 from scapy.all import sniff, IP, TCP, UDP, get_if_list
 
-# ---------------- GLOBAL VARIABLES ---------------- #
+
 
 sniffing = False
 packet_count = 0
@@ -16,7 +16,7 @@ sniffer_thread = None
 
 danger_ports = [23, 445, 3389, 4444, 21]
 
-# ---------------- SYSTEM INFO FUNCTIONS ---------------- #
+
 
 def get_local_ip():
     try:
@@ -38,7 +38,7 @@ def get_mac():
     mac = uuid.getnode()
     return ':'.join(('%012X' % mac)[i:i+2] for i in range(0,12,2))
 
-# ---------------- PACKET HANDLER ---------------- #
+
 
 def packet_handler(packet):
     global packet_count
@@ -77,7 +77,7 @@ def packet_handler(packet):
                    dst_ip, dst_port,
                    protocol, size, tag)
 
-# ---------------- GUI UPDATE ---------------- #
+
 
 def update_gui(no, time, src, sport, dst, dport, proto, size, tag):
     packet_table.insert("", "end",
@@ -86,7 +86,7 @@ def update_gui(no, time, src, sport, dst, dport, proto, size, tag):
                         tags=(tag,))
     counter_label.config(text=f"Packets Captured: {no}")
 
-# ---------------- SNIFF CONTROL ---------------- #
+
 
 def stop_filter(packet):
     return not sniffing
@@ -117,7 +117,7 @@ def stop_sniffing():
     sniffing = False
     status_label.config(text="Sniffing Stopped", fg="red")
 
-# ---------------- CSV EXPORT ---------------- #
+
 
 def save_to_csv():
     with open("captured_packets.csv", "w", newline="") as file:
@@ -126,7 +126,7 @@ def save_to_csv():
         for row in packet_table.get_children():
             writer.writerow(packet_table.item(row)["values"])
 
-# ---------------- GUI DESIGN ---------------- #
+
 
 root = tk.Tk()
 root.title("Network Packet Analyzer v2.0")
@@ -143,7 +143,7 @@ tk.Label(root,
          font=("Segoe UI", 9),
          bg="#0f172a", fg="gray").pack()
 
-# ---------------- SYSTEM INFO PANEL ---------------- #
+
 
 info_frame = tk.LabelFrame(root,
                            text="My System Info",
@@ -167,7 +167,7 @@ tk.Label(info_frame,
          text=f"MAC Address: {get_mac()}",
          bg="#0f172a", fg="cyan").pack()
 
-# ---------------- INTERFACE & FILTER ---------------- #
+
 
 control_frame = tk.Frame(root, bg="#0f172a")
 control_frame.pack(pady=10)
@@ -191,7 +191,7 @@ filter_entry = tk.Entry(control_frame, width=20)
 filter_entry.insert(0, "ip")
 filter_entry.pack(side="left", padx=5)
 
-# ---------------- BUTTONS ---------------- #
+
 
 btn_frame = tk.Frame(root, bg="#0f172a")
 btn_frame.pack(pady=10)
@@ -224,7 +224,7 @@ status_label = tk.Label(root,
                         bg="#0f172a", fg="red")
 status_label.pack(pady=5)
 
-# ---------------- TABLE ---------------- #
+
 
 columns = ("No", "Time", "Source IP", "Src Port",
            "Destination IP", "Dst Port",
